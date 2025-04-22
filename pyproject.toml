@@ -1,0 +1,15 @@
+[project]
+name = "netcore-cpaas-mcp"
+version = "0.1.0"
+description = "Netcore WhatsApp MCP Tools for template status and PR changes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp-server",
+    "python-dotenv",
+    "requests"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
