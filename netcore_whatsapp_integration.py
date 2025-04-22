@@ -133,10 +133,74 @@ def create_template(template_data: dict) -> dict:
         traceback.print_exc()
         return None
 
+def fetch_media_details(media_id: str) -> dict:
+    """Fetch the preview or details of a WhatsApp media.
+    
+    Args:
+        media_id: The ID of the media to get preview/details for
+        
+    Returns:
+        A dictionary containing the media details information
+    """
+    url = f"{BASE_URL}/media/{media_id}"
+    headers = {
+        'Authorization': WHATSAPP_TOKEN
+    }
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching media details: {str(e)}")
+        traceback.print_exc()
+        return None
+
+def fetch_template_list(limit: int = 10, offset: int = 0, status: str = "Approved", language: str = "English", template_type: str = "1,2") -> dict:
+    """Fetch the list of WhatsApp templates with optional filters.
+    
+    Args:
+        limit: Maximum number of templates to return (default: 10)
+        offset: Number of templates to skip (default: 0)
+        status: Filter by template status (default: "Approved")
+        language: Filter by template language (default: "English")
+        template_type: Filter by template types (default: "1,2")
+        
+    Returns:
+        A dictionary containing the list of templates
+    """
+    url = f"{BASE_URL}/metainfo/template/list"
+    headers = {
+        'Authorization': WHATSAPP_TOKEN
+    }
+    
+    params = {
+        'limit': limit,
+        'offset': offset,
+        'status': status,
+        'language': language,
+        'template_type': template_type
+    }
+    
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching template list: {str(e)}")
+        traceback.print_exc()
+        return None
+
 # Example usage for debugging
 
 # status = fetch_template_status('rk_lines')
 # print(status)
 
-templateData = fetch_template_preview('rk_lines')
-print(templateData)
+# templateData = fetch_template_preview('rk_lines')
+# print(templateData)
+
+# mediaDetails = fetch_media_details('your_media_id_here')
+# print(mediaDetails)
+
+# templateList = fetch_template_list(limit=10, offset=0, status="Approved", language="English", template_type="1,2")
+# print(templateList)

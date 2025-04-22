@@ -4,7 +4,7 @@ import traceback
 import argparse
 from typing import Any, List, Dict
 from mcp.server.fastmcp import FastMCP
-from netcore_whatsapp_integration import fetch_template_status, fetch_template_preview, send_template_message, create_template
+from netcore_whatsapp_integration import fetch_template_status, fetch_template_preview, send_template_message, create_template, fetch_media_details, fetch_template_list
 from dotenv import load_dotenv
 
 class NetcoreCPaaSMCP:
@@ -121,6 +121,58 @@ class NetcoreCPaaSMCP:
                 return response
             except Exception as e:
                 print(f"Error creating template: {str(e)}", file=sys.stderr)
+                traceback.print_exc(file=sys.stderr)
+                return {}
+
+        @self.mcp.tool()
+        async def get_media_details(media_id: str) -> Dict[str, Any]:
+            """Fetch the preview or details of a WhatsApp media.
+            
+            Args:
+                media_id: The ID of the media to get preview/details for
+                
+            Returns:
+                A dictionary containing the media details information
+            """
+            print(f"Fetching details for media: {media_id}", file=sys.stderr)
+            try:
+                details = fetch_media_details(media_id)
+                if details is None:
+                    print(f"No details returned for media: {media_id}", file=sys.stderr)
+                    return {}
+                
+                print(f"Successfully fetched media details", file=sys.stderr)
+                return details
+            except Exception as e:
+                print(f"Error fetching media details: {str(e)}", file=sys.stderr)
+                traceback.print_exc(file=sys.stderr)
+                return {}
+
+        @self.mcp.tool()
+        async def get_template_list(limit: int = 10, offset: int = 0, status: str = "Approved", language: str = "English", template_type: str = "1,2") -> Dict[str, Any]:
+            """Fetch the list of WhatsApp templates with optional filters.
+            
+            Args:
+                limit: Maximum number of templates to return (default: 10)
+                offset: Number of templates to skip (default: 0)
+                status: Filter by template status (default: "Approved")
+                language: Filter by template language (default: "English")
+                template_type: Filter by template types (default: "1,2")
+                
+            Returns:
+                A dictionary containing the list of templates
+            """
+            print(f"Fetching template list with filters: limit={limit}, offset={offset}, status={status}, language={language}, template_type={template_type}", file=sys.stderr)
+            try:
+                templates = fetch_template_list(limit, offset, status, language, template_type)
+                if templates is None:
+                    print(f"No templates returned", file=sys.stderr)
+                    return {}
+                
+                print(f"Successfully fetched template list", file=sys.stderr)
+                return templates
+            except Exception as e:
+                print(f"Error fetching template list: {str(e)}", file=sys.stderr)
                 traceback.print_exc(file=sys.stderr)
                 return {}
     
