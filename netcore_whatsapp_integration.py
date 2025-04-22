@@ -104,6 +104,35 @@ def send_template_message(template_name: str, recipient_whatsapp: str) -> dict:
         traceback.print_exc()
         return None
 
+def create_template(template_data: dict) -> dict:
+    """Create a new WhatsApp template.
+    
+    Args:
+        template_data: Dictionary containing template details including:
+            - category: Template category (e.g., "MARKETING")
+            - name: Template name
+            - language: Template language code (e.g., "en_US")
+            - allow_category_change: Boolean to allow category changes
+            - components: List of template components (header, body, footer, buttons)
+        
+    Returns:
+        A dictionary containing the API response
+    """
+    url = f"{BASE_URL}/metainfo/template/create"
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': WHATSAPP_TOKEN
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=template_data)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating template: {str(e)}")
+        traceback.print_exc()
+        return None
+
 # Example usage for debugging
 
 # status = fetch_template_status('rk_lines')

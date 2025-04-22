@@ -4,7 +4,7 @@ import traceback
 import argparse
 from typing import Any, List, Dict
 from mcp.server.fastmcp import FastMCP
-from netcore_whatsapp_integration import fetch_template_status, fetch_template_preview, send_template_message
+from netcore_whatsapp_integration import fetch_template_status, fetch_template_preview, send_template_message, create_template
 from dotenv import load_dotenv
 
 class NetcoreCPaaSMCP:
@@ -92,6 +92,35 @@ class NetcoreCPaaSMCP:
                 return response
             except Exception as e:
                 print(f"Error sending template message: {str(e)}", file=sys.stderr)
+                traceback.print_exc(file=sys.stderr)
+                return {}
+
+        @self.mcp.tool()
+        async def create_whatsapp_template(template_data: Dict[str, Any]) -> Dict[str, Any]:
+            """Create a new WhatsApp template.
+            
+            Args:
+                template_data: Dictionary containing template details including:
+                    - category: Template category (e.g., "MARKETING")
+                    - name: Template name
+                    - language: Template language code (e.g., "en_US")
+                    - allow_category_change: Boolean to allow category changes
+                    - components: List of template components (header, body, footer, buttons)
+                
+            Returns:
+                A dictionary containing the API response
+            """
+            print(f"Creating new WhatsApp template: {template_data.get('name')}", file=sys.stderr)
+            try:
+                response = create_template(template_data)
+                if response is None:
+                    print(f"Failed to create template", file=sys.stderr)
+                    return {}
+                
+                print(f"Successfully created template", file=sys.stderr)
+                return response
+            except Exception as e:
+                print(f"Error creating template: {str(e)}", file=sys.stderr)
                 traceback.print_exc(file=sys.stderr)
                 return {}
     
