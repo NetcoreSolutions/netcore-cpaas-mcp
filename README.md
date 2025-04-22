@@ -21,13 +21,25 @@ This MCP server provides a standardized interface for interacting with NETCORE C
 
 ## Installation
 
-1. Clone the repository:
+1: Install the uv package manager
+
+```bash
+# For Mac/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# For Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+2. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd netcore-cpaas-mcp
 ```
 
-2. Create and activate a virtual environment:
+3. Create and activate a virtual environment:
+
 ```bash
 # Mac/Linux:
 uv venv
@@ -37,7 +49,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-3. Install dependencies:
+4. Install dependencies:
 ```bash
 uv add "mcp[cli]" requests python-dotenv
 uv pip install -r requirements.txt
@@ -50,7 +62,7 @@ uv pip install -r requirements.txt
 WHATSAPP_TOKEN=your_netcore_cpaas_whatsapp_token
 ```
 
-2. Configure MCP server in your MCP client configuration:
+2. Configure MCP server in your MCP client configuration e.g. Claude Desktop or Cursor IDE:
 ```json
 {
     "mcpServers": {
@@ -90,15 +102,6 @@ WHATSAPP_TOKEN=your_netcore_cpaas_whatsapp_token
      - `template_name`: Name of the template to use
      - `recipient_whatsapp`: Recipient's WhatsApp number
    - Returns: API response containing message status
-
-## Usage
-
-1. Start the MCP server:
-```bash
-python netcore_cpaas_mcp.py [--debug]
-```
-
-2. Use the MCP client to interact with the server and access the available tools.
 
 ## Development
 
