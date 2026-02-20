@@ -1,0 +1,16 @@
+The project is structured as follows:
+- `netcore_cpaas_mcp.py`: Main MCP Server implementation — registers 42 WhatsApp tools
+- `netcore_whatsapp/`: WhatsApp API integration package
+  - `__init__.py`: Shared config (BASE_URL, auth headers, HTTP helper functions)
+  - `templates.py`: Template CRUD, preview, status, category, language, profile (11 functions)
+  - `messaging.py`: Send template, priority, and bulk messages (3 functions)
+  - `media.py`: Upload media, get media, create media handler (3 functions)
+  - `consent.py`: Opt-in/out and blocklist/whitelist management (2 functions)
+  - `flows.py`: Flow CRUD, publish, deprecate, preview, edit metadata (7 functions)
+  - `analytics.py`: Template analytics (1 function)
+  - `conversations.py`: Send conversation messages within 24h window (1 function)
+  - `conversions.py`: CAPI conversion event tracking (1 function)
+  - `payments.py`: Payment status, refund, OAuth, config CRUD (5 functions)
+  - `webhooks.py`: Webhook list, update, manage status (3 functions)
+  - `misc.py`: Settings, stats, messages, summary stats, API status (5 functions)
+- `netcore_whatsapp_integration.py`: Legacy integration file (deprecated — use netcore_whatsapp/ package)
